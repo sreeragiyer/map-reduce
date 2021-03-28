@@ -2,14 +2,15 @@ package test_cases;
 
 import java.io.*;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Scanner;
 import mapreduce.utils.Mapper;
 
 public class Capitalize extends  Mapper {
 
-    public HashMap<String, String> map(String s, String v) {
+    public HashMap<String, List<String>> map(String s, String v) {
 
-        HashMap<String, String> m = new HashMap<>();
+        HashMap<String, List<String>> m = new HashMap<>();
 
         return m;
     }

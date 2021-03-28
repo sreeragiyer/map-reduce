@@ -21,7 +21,7 @@ public abstract class Mapper {
         File tempFile = new File(tempFileName);
         try {
             tempFile.createNewFile();
-            FileWriter fw = new FileWriter(tempFile.getAbsoluteFile());
+            FileWriter fw = new FileWriter(tempFile.getAbsoluteFile(), true);
             BufferedWriter bw = new BufferedWriter(fw);
             output.entrySet().forEach(entry -> {
                 entry.getValue().forEach(value -> {

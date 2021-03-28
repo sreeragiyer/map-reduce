@@ -19,9 +19,9 @@ public class MapReduceSpecification {
     /**
      * mapreduce.utils.Mapper function which will do the mapping execution.
      */
-    Mapper mapper;
+    public Mapper mapper;
     /**
      * mapreduce.utils.Reducer function which will do the reducer execution.
      */
-    Reducer reducer;
+    public Reducer reducer;
 }

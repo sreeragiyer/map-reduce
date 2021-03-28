@@ -17,7 +17,7 @@ public abstract class Reducer {
             if (!outputFile.exists()) {
                 outputFile.createNewFile();
             }
-            FileWriter fw = new FileWriter(outputFile.getAbsoluteFile());
+            FileWriter fw = new FileWriter(outputFile.getAbsoluteFile(), true);
             BufferedWriter bw = new BufferedWriter(fw);
             reducerInput.entrySet().forEach(entry -> {
                 List<String> reduceOutput = reduce(entry.getKey(), entry.getValue());
