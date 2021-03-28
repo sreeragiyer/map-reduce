@@ -1,8 +1,18 @@
 
 import java.io.*;
+import java.util.HashMap;
 import java.util.Scanner;
+//import Mapper.map;
 
-public class Capitalize {
+public class Capitalize extends  Mapper<String, String, String, String>{
+
+    public HashMap<String, String> map(String s, String v) {
+
+        HashMap<String, String> m = new HashMap<>();
+
+        return m;
+    }
+
     public static void main(String[] args) throws IOException {
         File in = new File("src/data/loremipsum.txt");
         Scanner sc = new Scanner(in);
