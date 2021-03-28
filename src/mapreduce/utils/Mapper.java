@@ -7,13 +7,14 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 
 public abstract class Mapper {
 
-    protected abstract HashMap<String, String> map(String k, String v);
+    protected abstract HashMap<String, List<String>> map(String k, String v);
 
     public String execute(String docId, String inputText) {
-        HashMap<String, String> output = map(docId, inputText);
+        HashMap<String, List<String>> output = map(docId, inputText);
         String currentTime = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
         String tempFileName = "intermediate_" + currentTime + ".txt";
 
