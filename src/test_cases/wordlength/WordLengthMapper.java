@@ -30,6 +30,7 @@ public class WordLengthMapper extends Mapper {
                 sb.append(txt.charAt(i));
             }
         }
+        System.out.println(same_len_words.get(8));
         return same_len_words;
     }
 }
