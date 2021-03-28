@@ -1,3 +1,5 @@
+package mapreduce.utils;
+
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -7,6 +9,7 @@ import java.util.Date;
 import java.util.HashMap;
 
 public abstract class Mapper {
+
     protected abstract HashMap<String, String> map(String k, String v);
 
     public String execute(String docId, String inputText) {

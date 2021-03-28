@@ -1,4 +1,4 @@
-import main.mapreduce.Mapper;
+package mapreduce.utils;
 
 public class MapReduceSpecification {
     /**
@@ -17,11 +17,11 @@ public class MapReduceSpecification {
      */
     public String outputFileLocation;
     /**
-     * Mapper function which will do the mapping execution.
+     * mapreduce.utils.Mapper function which will do the mapping execution.
      */
     Mapper mapper;
     /**
-     * Reducer function which will do the reducer execution.
+     * mapreduce.utils.Reducer function which will do the reducer execution.
      */
     Reducer reducer;
 }

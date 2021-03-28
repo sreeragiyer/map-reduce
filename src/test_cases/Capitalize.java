@@ -1,3 +1,4 @@
+package test_cases;
 
 import java.io.*;
 import java.util.Scanner;
