@@ -24,6 +24,8 @@ public class MapReduce {
             String tempFilePath = mapper.execute("", data);
             HashMap<String, List<String>> tempData = getMapFromTextFile(tempFilePath);
             reducer.execute(specs.outputFileLocation, tempData);
+            File myObj = new File(tempFilePath);
+            myObj.delete();
         } catch (IOException e) {
             //Do Nothing.
         }
