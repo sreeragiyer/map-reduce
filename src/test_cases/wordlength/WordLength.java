@@ -3,12 +3,9 @@ package test_cases.wordlength;
 import mapreduce.utils.MapReduce;
 import mapreduce.utils.MapReduceSpecification;
 
-import java.io.IOException;
-
 public class WordLength {
 
-    public  static void main(String[] args) throws IOException {
-        System.out.println("Hello world");
+    public  static void main(String[] args) {
         MapReduceSpecification mrs = new MapReduceSpecification();
         mrs.numProcesses = 1;
         mrs.inputFileLocation = "src/data/loremipsum.txt";
