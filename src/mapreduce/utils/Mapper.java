@@ -24,11 +24,13 @@ public abstract class Mapper {
             FileWriter fw = new FileWriter(tempFile.getAbsoluteFile());
             BufferedWriter bw = new BufferedWriter(fw);
             output.entrySet().forEach(entry -> {
-                try {
-                    bw.write(entry.getKey() + ":" + entry.getValue());
-                } catch (IOException e) {
-                    //TODO : Handle the exception with proper messaging.
-                }
+                entry.getValue().forEach(value -> {
+                   try {
+                       bw.write(entry.getKey() + ":" + entry.getValue());
+                   } catch (IOException e) {
+                       //TODO : Handle the exception with proper messaging.
+                   }
+                });
             });
             bw.close();
         } catch (IOException e) {
