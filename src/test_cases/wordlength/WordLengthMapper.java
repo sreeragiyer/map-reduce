@@ -1,9 +1,8 @@
-package test_cases.WordLengthTestCase;
+package test_cases.wordlength;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import mapreduce.utils.Mapper;
 
@@ -15,14 +14,17 @@ public class WordLengthMapper extends Mapper {
         for(int i=0;i<txt_len;i++) {
             if (Character.isWhitespace(txt.charAt(i)) || txt.charAt(i) == '.' || txt.charAt(i) == '\'') {
                 String word = sb.toString();
-                String len = String.valueOf(word.length());
-                List<String> words = same_len_words.get(len);
-                if(words == null || words.isEmpty()) {
-                    words = new ArrayList<>();
+                int l =word.length();
+                if(l > 0) {
+                    String len = String.valueOf(l);
+                    List<String> words = same_len_words.get(len);
+                    if (words == null || words.isEmpty()) {
+                        words = new ArrayList<>();
+                    }
+                    words.add(word);
+                    same_len_words.put(len, words);
+                    sb = new StringBuilder();
                 }
-                words.add(word);
-                same_len_words.put(len,words);
-                sb = new StringBuilder();
             }
             else {
                 sb.append(txt.charAt(i));

@@ -17,12 +17,12 @@ public abstract class Reducer {
             if (!outputFile.exists()) {
                 outputFile.createNewFile();
             }
-            FileWriter fw = new FileWriter(outputFile.getAbsoluteFile(), true);
+            FileWriter fw = new FileWriter(outputFile.getAbsoluteFile());
             BufferedWriter bw = new BufferedWriter(fw);
             reducerInput.entrySet().forEach(entry -> {
                 List<String> reduceOutput = reduce(entry.getKey(), entry.getValue());
                 try {
-                    bw.write(entry.getKey() + " : " + reduceOutput.toString());
+                    bw.write(entry.getKey() + " : " + reduceOutput.toString() + "\n");
                 } catch (IOException e) {
                     // TODO : Add proper exception messaging.
                 }

@@ -21,12 +21,12 @@ public abstract class Mapper {
         File tempFile = new File(tempFileName);
         try {
             tempFile.createNewFile();
-            FileWriter fw = new FileWriter(tempFile.getAbsoluteFile(), true);
+            FileWriter fw = new FileWriter(tempFile.getAbsoluteFile());
             BufferedWriter bw = new BufferedWriter(fw);
             output.entrySet().forEach(entry -> {
                 entry.getValue().forEach(value -> {
                    try {
-                       bw.write(entry.getKey() + ":" + entry.getValue());
+                       bw.write(entry.getKey() + ":" + value + "\n");
                    } catch (IOException e) {
                        //TODO : Handle the exception with proper messaging.
                    }

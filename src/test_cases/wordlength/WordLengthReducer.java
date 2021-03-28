@@ -1,4 +1,4 @@
-package test_cases.WordLengthTestCase;
+package test_cases.wordlength;
 
 
 import mapreduce.utils.Reducer;
