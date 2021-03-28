@@ -12,8 +12,8 @@ public class WordCount {
     {
         MapReduceSpecification mp = new MapReduceSpecification();
         mp.numProcesses = 1;
-        mp.inputFileLocation = "src/data/hamlet.txt";
-        mp.outputFileLocation = "src/test_cases_output/wordcount.txt";
+        mp.inputFileLocation =  System.getProperty("user.dir")+"/src/data/hamlet.txt";
+        mp.outputFileLocation =  System.getProperty("user.dir")+"/src/test_cases_output/wordcount.txt";
         mp.mapper = new WordCountMapper();
         mp.reducer = new WordCountReducer();
         MapReduce obj = new MapReduce();
