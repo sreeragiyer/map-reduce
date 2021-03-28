@@ -26,7 +26,8 @@ public abstract class Mapper {
             output.entrySet().forEach(entry -> {
                 entry.getValue().forEach(value -> {
                    try {
-                       bw.write(entry.getKey() + ":" + value + "\n");
+                       bw.write(entry.getKey() + ":" + value);
+                       bw.write("\n");
                    } catch (IOException e) {
                        //TODO : Handle the exception with proper messaging.
                    }
