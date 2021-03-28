@@ -3,9 +3,9 @@ package test_cases;
 import java.io.*;
 import java.util.HashMap;
 import java.util.Scanner;
-//import Mapper.map;
+import mapreduce.utils.Mapper;
 
-public class Capitalize extends  Mapper<String, String, String, String>{
+public class Capitalize extends  Mapper {
 
     public HashMap<String, String> map(String s, String v) {
 
@@ -32,7 +32,7 @@ public class Capitalize extends  Mapper<String, String, String, String>{
             }
         }
 
-        FileWriter myWriter = new FileWriter("src/data/capitalized.txt");
+        FileWriter myWriter = new FileWriter("src/test_cases_output/capitalized.txt");
         myWriter.write(sb.toString());
         myWriter.close();
 

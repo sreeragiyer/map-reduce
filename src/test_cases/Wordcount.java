@@ -24,24 +24,24 @@ public class Wordcount {
     public static void main(String[] args) {
         // TODO code application logic here
         Map<String,Integer> map = new HashMap<String,Integer>();
-       
-        
+
+
     String content = new String(Files.readAllBytes(Paths.get(r"C:\Users\DELL\Downloads\hamlet(1).txt")), StandardCharsets.UTF_8);
-    
+
    String[] words = content.replaceAll("[^a-zA-Z ]", "").split("\\s+");
-   
+
    for(String str : words)
    {
        map.put(str,map.getOrDefault(str,0)+1);
    }
-   
+
    for(String str : map.keySet())
    {
        String res = "The given word is "+str+" and the number of occurrences are "+map.get(str)+".";
        Files.write(Paths.get(r"C:\Users\DELL\Desktop\Milestone1\Wordcount.txt"),res.getBytes());
-       
+
    }
-        
+
     }
     
 }
