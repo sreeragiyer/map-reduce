@@ -24,20 +24,6 @@ public class WordCountReducer extends Reducer {
         result.add(res);
 
         return result;
-        /*
-        for(String str : map.keySet())
-        {
-            ArrayList<String> temp = map.get(str);
-            int count = 0;
-            for(String str1 : temp)
-            {
-                count++;
-            }
-
-            String star = "The word "+str+" occurs "+Integer.toString(count)+"times in the source file";
-            result.add(star);
-        }
-*/
 
     }
 }

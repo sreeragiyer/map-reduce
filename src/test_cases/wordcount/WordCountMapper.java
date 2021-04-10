@@ -10,7 +10,6 @@ public class WordCountMapper extends Mapper {
         HashMap<String,List<String>> map = new HashMap<>();
         String[] words = input.toLowerCase(Locale.ROOT).split("\\s+");
 
-        System.out.println(words.length);
         for(String str : words)
         {
             if(str.length()>0) {
