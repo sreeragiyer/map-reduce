@@ -11,5 +11,5 @@
 - Each test case can be run by directly running the main class of the test case after compiling the project. Eg : java WordCount.java.
 - The first application 'WordCount' takes as input a text file : 'hamlet.txt' present in the 'data' directory in 'src'(source) folder and returns the count for each word present in the text file. 
 - The second application 'WordLength' takes as input a text file : 'loremipsum.txt' present in the 'data' directory in 'src'(source) folder and returns a text file which contains a fixed length and all the words corresponding to that fixed length.
-- The third application 'Capitalize' takes as input a text file : 'loremipsum.txt' present in the 'data' directory in 'src'(source) folder and returns a text file which contains all the words as capitalized. The capitalization of text can be done in parallel when there are multiple processes.
+- The third application 'WordinLine' takes as input a text file : 'hamlet.txt' present in the 'data' directory in 'src'(source) folder and returns a text file which contains the line numbers where each word is present.
 - The script 'run-test-cases.sh' can be used to run all the applications.
