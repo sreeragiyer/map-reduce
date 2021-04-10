@@ -32,4 +32,8 @@ public class CapitalizeMapper extends Mapper{
 
         return m;
     }
+
+    public void printHelloWorld() {
+        System.out.println("Hello world");
+    }
 }

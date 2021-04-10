@@ -2,6 +2,7 @@ package mapreduce.utils;
 
 
 import java.io.*;
+import java.lang.reflect.Method;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -19,6 +20,16 @@ public class MapReduce {
         String inputFileLocation = specs.inputFileLocation;
         Mapper mapper = specs.mapper;
         Reducer reducer = specs.reducer;
+        try {
+            Object mapper1 = Class.forName("test_cases.capitalize.CapitalizeMapper")
+                    .getDeclaredConstructor().newInstance();
+            Method method = mapper1.getClass().getDeclaredMethod("printHelloWorld");
+            method.invoke(mapper1);
+            //mapper1.getClass().getDeclaredMethod("")
+        } catch (Exception e) {
+            System.out.println("fadfas");
+            // Do Nothing.
+        }
         try {
             String data = new String(Files.readAllBytes(Paths.get(inputFileLocation)));
             String tempFilePath = mapper.execute("", data);
