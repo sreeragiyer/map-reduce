@@ -15,7 +15,7 @@ public class WordinLine {
         mp.inputFileLocation = System.getProperty("user.dir")+"/src/data/hamlet.txt";
         mp.outputFileLocation = System.getProperty("user.dir")+"/src/test_cases_output/wordinline.txt";
         mp.mapper = new WordinLineMapper();
-        mp.reducer = new WordinLineReducer();
+        mp.reducerClassPath = "test_cases.wordinline.WordinLineReducer";
         MapReduce obj = new MapReduce();
         obj.mapReduce(mp);
     }

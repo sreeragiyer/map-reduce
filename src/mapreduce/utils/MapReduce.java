@@ -2,13 +2,11 @@ package mapreduce.utils;
 
 
 import java.io.*;
-import java.lang.reflect.Method;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Stream;
 
 /**
@@ -19,28 +17,19 @@ public class MapReduce {
     public void mapReduce(MapReduceSpecification specs) {
         String inputFileLocation = specs.inputFileLocation;
         Mapper mapper = specs.mapper;
-        Reducer reducer = specs.reducer;
-        try {
-            Object mapper1 = Class.forName("test_cases.capitalize.CapitalizeMapper")
-                    .getDeclaredConstructor().newInstance();
-            Method method = mapper1.getClass().getDeclaredMethod("printHelloWorld");
-            method.invoke(mapper1);
-            //mapper1.getClass().getDeclaredMethod("")
-        } catch (Exception e) {
-            System.out.println("fadfas");
-            // Do Nothing.
-        }
         try {
             String data = new String(Files.readAllBytes(Paths.get(inputFileLocation)));
             String tempFilePath = mapper.execute("", data);
             HashMap<String, List<String>> tempData = getMapFromTextFile(tempFilePath);
-            // reducer.execute(specs.outputFileLocation, tempData);
-            ProcessBuilder pbReducer = new ProcessBuilder("java Reducer", specs.outputFileLocation, tempFilePath, specs.reducerClassPath);
-            pbReducer.start();
+            ProcessBuilder pbReducer = new ProcessBuilder("java",
+                    "-cp", "./src", "mapreduce/utils/Reducer",
+                    specs.outputFileLocation, tempFilePath, specs.reducerClassPath);
+            Process reducerProcess = pbReducer.start();
+            reducerProcess.waitFor();
             File myObj = new File(tempFilePath);
             myObj.delete();
-        } catch (IOException e) {
-            //Do Nothing.
+        } catch (IOException | InterruptedException e) {
+            //TODO : Handle the exception with proper messaging.
         }
     }
 

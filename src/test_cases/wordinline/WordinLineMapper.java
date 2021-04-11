@@ -1,6 +1,9 @@
 package test_cases.wordinline;
-import java.io.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+
 import mapreduce.utils.Mapper;
 
 public class WordinLineMapper extends Mapper {

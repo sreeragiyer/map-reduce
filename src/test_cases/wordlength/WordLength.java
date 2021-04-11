@@ -11,7 +11,6 @@ public class WordLength {
         mrs.inputFileLocation = System.getProperty("user.dir")+"/src/data/loremipsum.txt";
         mrs.outputFileLocation = System.getProperty("user.dir")+"/src/test_cases_output/WordLength.txt";
         mrs.mapper = new WordLengthMapper();
-        mrs.reducer = new WordLengthReducer();
         mrs.reducerClassPath = "test_cases.wordlength.WordLengthReducer";
         MapReduce obj = new MapReduce();
         obj.mapReduce(mrs);
