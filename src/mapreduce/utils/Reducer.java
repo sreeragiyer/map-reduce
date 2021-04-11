@@ -54,6 +54,7 @@ public abstract class Reducer {
 
     public static void main(String[] args) {
         try {
+
             String opFileLoc = args[0];
             String reduceDirPath = args[1];
             String className = args[2];

@@ -15,6 +15,35 @@ public abstract class Mapper {
 
     protected abstract HashMap<String, List<String>> map(String k, String v);
 
+    public String execute(String docId, String inputText) {
+        HashMap<String, List<String>> output = map(docId, inputText);
+        String currentTime = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
+        File directory = new File("reducer_0");
+        directory.mkdir();
+        String tempFileName = "reducer_0/intermediate_" + currentTime + ".txt";
+
+        File tempFile = new File(tempFileName);
+        try {
+            tempFile.createNewFile();
+            FileWriter fw = new FileWriter(tempFile.getAbsoluteFile());
+            BufferedWriter bw = new BufferedWriter(fw);
+            output.entrySet().forEach(entry -> {
+                entry.getValue().forEach(value -> {
+                    try {
+                        bw.write(entry.getKey() + ":" + value);
+                        bw.write("\n");
+                    } catch (IOException e) {
+                        //TODO : Handle the exception with proper messaging.
+                    }
+                });
+            });
+            bw.close();
+        } catch (IOException e) {
+            //TODO : Handle the exception with proper messaging.
+        }
+        return tempFileName;
+    }
+
     public void execute(String inputFileLoc, int start_line, int end_line, int num_processes) {
         StringBuilder inputText = new StringBuilder();
         try {
@@ -37,8 +66,12 @@ public abstract class Mapper {
         List<BufferedWriter> bufferedWriters = new ArrayList<>();
         try {
             for (int i = 0; i < num_processes; i++) {
+                File directory = new File("reducer_" + i);
+                directory.mkdir();
                 File tempFile = new File("reducer_" + i + "/" + tempFileName);
-                tempFile.createNewFile();
+                if (!tempFile.exists()) {
+                    tempFile.createNewFile();
+                }
                 FileWriter fw = new FileWriter(tempFile.getAbsoluteFile());
                 BufferedWriter bw = new BufferedWriter(fw);
                 bufferedWriters.add(bw);
@@ -55,6 +88,9 @@ public abstract class Mapper {
                     }
                 });
             });
+            for (BufferedWriter bufferedWriter : bufferedWriters) {
+                bufferedWriter.close();
+            }
 
         } catch (IOException e) {
             //TODO : Handle the exception with proper messaging.
@@ -69,14 +105,10 @@ public abstract class Mapper {
             String end_line = args[3];
             String num_processes = args[4];
             Mapper obj = (Mapper) Class.forName(className).getDeclaredConstructor().newInstance();
-
+            String data = new String(Files.readAllBytes(Paths.get(inputFileLoc)));
+           // obj.execute("", data);
             obj.execute(inputFileLoc, Integer.parseInt(start_line), Integer.parseInt(end_line),
                     Integer.parseInt(num_processes));
-            /**
-             * ProcessBuilder pbMapper = new ProcessBuilder("java",
-             *                         "-cp", "./src", "mapreduce/utils/Mapper", specs.mapperClassPath,
-             *                         inputFileLocation, start_line, String.valueOf(partition_length))
-             */
         }
         catch(Exception e) {
             System.out.println("class not found");
