@@ -1,0 +1,7 @@
+12 : [sollicitudin,sollicitudin,pellentesque,sollicitudin]
+1 : [a,a,a,a,a]
+3 : [vel,non,vel,sit,nec,dis,mus,Nam,nec,sed,per,per,Sed,dui,non,Sed,nec,non,leo,non,vel,sit,nec,nec,sed,eu,,leo,ut,,sed,dui,sit,Sed,leo,non,et,,Sed,nec,per,per,vel,est,leo]
+5 : [Nulla,Morbi,purus,lorem,Fusce,metus,lorem,metus,Class,nulla,velit,Donec,Nulla,felis,ipsum,risus,diam,,magna,risus,Lorem,ipsum,dolor,amet,,velit,purus,metus,dolor,Donec,eros,,vitae,Morbi,velit,elit,,velit,massa,nisi,,vitae,magna,massa,lacus,felis,purus,metus,augue,lorem,risus,Class,Donec,risus,lacus,vitae,Etiam,Donec,dolor]
+7 : [dapibus,tellus,,feugiat,maximus,natoque,montes,,Quisque,egestas,conubia,nostra,,dapibus,tortor,,maximus,feugiat,semper,,lacinia,aliquet,Quisque,turpis,,Aliquam,blandit,egestas,aliquam,tempor,,tortor,,commodo,sodales,Vivamus,conubia,nostra,,dapibus,Quisque,sodales,posuere,egestas,posuere,euismod,sodales]
+9 : [fringilla,sagittis,,tincidunt,penatibus,ridiculus,fringilla,facilisis,himenaeos,facilisis,vulputate,consequat,imperdiet,tincidunt,efficitur,imperdiet,fermentum,efficitur,Phasellus,Phasellus,ultricies,porttitor,malesuada,efficitur,Phasellus,consequat,vulputate,facilisis,pharetra,,elementum,malesuada,tincidunt,tristique,imperdiet,facilisis,hendrerit,Curabitur,Phasellus,efficitur,venenatis,porttitor,himenaeos,imperdiet,efficitur,ultricies,imperdiet,efficitur,tristique]
+10 : [vestibulum,parturient,vestibulum,hendrerit,,Vestibulum,adipiscing,facilisis,,tincidunt,,fringilla,]
