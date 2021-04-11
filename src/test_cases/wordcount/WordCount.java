@@ -2,9 +2,6 @@ package test_cases.wordcount;
 
 import mapreduce.utils.MapReduce;
 import mapreduce.utils.MapReduceSpecification;
-import mapreduce.utils.Mapper;
-import test_cases.wordlength.WordLengthMapper;
-import test_cases.wordlength.WordLengthReducer;
 
 import java.io.File;
 
@@ -13,7 +10,7 @@ public class WordCount {
     public static void main(String[] args)
     {
         MapReduceSpecification mp = new MapReduceSpecification();
-        mp.numProcesses = 1;
+        mp.numProcesses = 2;
         mp.inputFileLocation =  System.getProperty("user.dir")+"/src/data/hamlet.txt";
         mp.outputFileLocation =  System.getProperty("user.dir")+"/src/test_cases_output/wordcount";
         File directory = new File(mp.outputFileLocation);
@@ -23,11 +20,4 @@ public class WordCount {
         MapReduce obj = new MapReduce();
         obj.mapReduce(mp);
     }
-
-
-
-
-
-
-
 }
