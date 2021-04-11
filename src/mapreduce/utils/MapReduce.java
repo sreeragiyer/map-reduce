@@ -1,7 +1,9 @@
 package mapreduce.utils;
 
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -17,17 +19,44 @@ public class MapReduce {
     public void mapReduce(MapReduceSpecification specs) {
         String inputFileLocation = specs.inputFileLocation;
         Mapper mapper = specs.mapper;
+        int lineCount = getLineCount(inputFileLocation);
+        int num_processes = specs.numProcesses;
+        List<Process> map_processes = new ArrayList<>();
+        List<Process> reducer_processes = new ArrayList<>();
         try {
-            String data = new String(Files.readAllBytes(Paths.get(inputFileLocation)));
-            String tempFilePath = mapper.execute("", data);
-            HashMap<String, List<String>> tempData = getMapFromTextFile(tempFilePath);
-            ProcessBuilder pbReducer = new ProcessBuilder("java",
-                    "-cp", "./src", "mapreduce/utils/Reducer",
-                    specs.outputFileLocation, tempFilePath, specs.reducerClassPath);
-            Process reducerProcess = pbReducer.start();
-            reducerProcess.waitFor();
-            File myObj = new File(tempFilePath);
-            myObj.delete();
+            int partition_length = lineCount/(specs.numProcesses);
+            for (int i=0; i<num_processes; i++) {
+                int start_line = i*partition_length;
+                int end_line = start_line+partition_length;
+                if (end_line>=lineCount) {
+                    end_line = lineCount-1;
+                }
+                ProcessBuilder pbMapper = new ProcessBuilder("java",
+                        "-cp", "./src", "mapreduce/utils/Mapper", specs.mapperClassPath,
+                        inputFileLocation, String.valueOf(start_line), String.valueOf(end_line),
+                        String.valueOf(num_processes));
+                Process mapperProcess = pbMapper.start();
+                map_processes.add(mapperProcess);
+            }
+            for (int i=0; i<num_processes; i++) {
+                map_processes.get(i).waitFor();
+            }
+            for (int i=0; i<num_processes; i++) {
+                ProcessBuilder pbReducer = new ProcessBuilder("java",
+                        "-cp", "./src", "mapreduce/utils/Reducer",
+                        specs.outputFileLocation, "reducer_" + i, specs.reducerClassPath);
+                Process reducerProcess = pbReducer.start();
+                reducer_processes.add(reducerProcess);
+            }
+            for (int i=0; i<num_processes; i++) {
+                reducer_processes.get(i).waitFor();
+            }
+            for (int i=0; i<num_processes; i++) {
+                File dir = new File("reducer_" + i);
+                for (File file: dir.listFiles())
+                    if (!file.isDirectory())
+                        file.delete();
+            }
         } catch (IOException | InterruptedException e) {
             //TODO : Handle the exception with proper messaging.
         }
@@ -48,5 +77,15 @@ public class MapReduce {
             //TODO : Handle the exception with proper messaging.
         }
         return map;
+    }
+
+    private int getLineCount(String inputFileLocation) {
+        int line_count = 0 ;
+        try (Stream<String> lines = Files.lines(Paths.get(inputFileLocation))) {
+           line_count =  (int) lines.count();
+        } catch (IOException e) {
+            //TODO : Handle the exception with proper messaging.
+        }
+        return line_count;
     }
 }

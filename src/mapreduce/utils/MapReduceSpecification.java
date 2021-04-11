@@ -21,6 +21,10 @@ public class MapReduceSpecification {
      */
     public Mapper mapper;
     /**
+     * fully qualified path to user defined mapper
+     */
+    public String mapperClassPath;
+    /**
      * mapreduce.utils.Reducer function which will do the reducer execution.
      */
     public Reducer reducer;
