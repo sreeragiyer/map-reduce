@@ -9,7 +9,7 @@ public class WordLength {
 
     public  static void main(String[] args) {
         MapReduceSpecification mrs = new MapReduceSpecification();
-        mrs.numProcesses = 2;
+        mrs.numProcesses = 3;
         mrs.inputFileLocation = System.getProperty("user.dir")+"/src/data/loremipsum.txt";
         mrs.outputFileLocation = System.getProperty("user.dir")+"/src/test_cases_output/wordlength";
         File directory = new File(mrs.outputFileLocation);
