@@ -1,13 +1,19 @@
 package test_cases.wordlength;
 
+import java.io.Serializable;
+import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 import mapreduce.utils.Mapper;
 
-public class WordLengthMapper extends Mapper {
-    public HashMap<String, List<String>> map(String docId, String txt) {
+public class WordLengthMapper extends UnicastRemoteObject implements Mapper, Serializable {
+    public WordLengthMapper() throws RemoteException {
+        super();
+    }
+    public HashMap<String, List<String>> map(String docId, String txt) throws RemoteException{
         HashMap<String, List<String> > same_len_words = new HashMap<String, List<String>>();
         int txt_len = txt.length();
         StringBuilder sb = new StringBuilder();

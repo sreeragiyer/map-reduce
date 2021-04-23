@@ -2,13 +2,20 @@ package test_cases.wordcount;
 
 import mapreduce.utils.Reducer;
 
+import java.io.Serializable;
+import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class WordCountReducer extends Reducer {
+public class WordCountReducer extends UnicastRemoteObject implements Reducer, Serializable {
 
-    public List<String> reduce(String strin, List<String> list)
+    public WordCountReducer() throws RemoteException {
+        super();
+    }
+
+    public List<String> reduce(String strin, List<String> list) throws RemoteException
     {
         ArrayList<String> result = new ArrayList<String>();
         int count = 0;

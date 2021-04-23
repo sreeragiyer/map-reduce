@@ -1,14 +1,19 @@
 package test_cases.wordinline;
 import mapreduce.utils.Reducer;
-import java.util.HashMap;
+
+import java.io.Serializable;
+import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.List;
 
-public class WordinLineReducer extends Reducer{
+public class WordinLineReducer extends UnicastRemoteObject implements Reducer, Serializable {
 
-    public List<String> reduce(String word,List<String> lines)
+    public WordinLineReducer() throws RemoteException {
+        super();
+    }
 
-    {
+    public List<String> reduce(String word,List<String> lines) throws RemoteException {
          List<String> result = new ArrayList<String>();
 
          StringBuilder sb = new StringBuilder();

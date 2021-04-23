@@ -1,4 +1,7 @@
 package test_cases.wordinline;
+import java.io.Serializable;
+import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -6,9 +9,13 @@ import java.util.Locale;
 
 import mapreduce.utils.Mapper;
 
-public class WordinLineMapper extends Mapper {
+public class WordinLineMapper extends UnicastRemoteObject implements Mapper, Serializable {
 
-    public HashMap<String,List<String>> map(String docId,String input)
+    public WordinLineMapper() throws RemoteException {
+        super();
+    }
+
+    public HashMap<String,List<String>> map(String docId,String input) throws RemoteException
     {
         HashMap<String,List<String>> map = new HashMap<>();
         // The below regular expression splits the string by the different lines

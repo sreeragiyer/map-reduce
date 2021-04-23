@@ -1,10 +1,9 @@
 ./src/mapreduce/utils/MapReduce.java
 ./src/mapreduce/utils/MapReduceSpecification.java
+./src/mapreduce/utils/MapperWorker.java
 ./src/mapreduce/utils/Reducer.java
 ./src/mapreduce/utils/Mapper.java
-./src/test_cases/capitalize/Capitalize.java
-./src/test_cases/capitalize/CapitalizeReducer.java
-./src/test_cases/capitalize/CapitalizeMapper.java
+./src/mapreduce/utils/ReducerWorker.java
 ./src/test_cases/wordlength/WordLength.java
 ./src/test_cases/wordlength/WordLengthMapper.java
 ./src/test_cases/wordlength/WordLengthReducer.java

@@ -21,15 +21,15 @@ public class MapReduceSpecification {
      */
     public Mapper mapper;
     /**
-     * fully qualified path to user defined mapper
-     */
-    public String mapperClassPath;
-    /**
      * mapreduce.utils.Reducer function which will do the reducer execution.
      */
     public Reducer reducer;
     /**
-     * fully qualified path to user defined reducer
+     * key to user defined mapper object for the rmi registry
      */
-    public String reducerClassPath;
+    public String mapperKey;
+    /**
+     * key to user defined reducer object for the rmi registry
+     */
+    public String reducerKey;
 }

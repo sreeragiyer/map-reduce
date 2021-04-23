@@ -7,5 +7,5 @@ else
   javac src/**/*.java
 fi
 java -cp ./src test_cases/wordlength/WordLength
-java -cp ./src test_cases/capitalize/Capitalize
+java -cp ./src test_cases/wordinline/WordinLine
 java -cp ./src test_cases/wordcount/WordCount
