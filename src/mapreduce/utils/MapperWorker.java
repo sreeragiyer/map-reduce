@@ -43,7 +43,7 @@ public class MapperWorker {
                     if (!tempFile.exists()) {
                         tempFile.createNewFile();
                     }
-                    FileWriter fw = new FileWriter(tempFile.getAbsoluteFile(), true);
+                    FileWriter fw = new FileWriter(tempFile.getAbsoluteFile());
                     BufferedWriter bw = new BufferedWriter(fw);
                     bufferedWriters.add(bw);
 
@@ -94,7 +94,7 @@ public class MapperWorker {
 
         Runnable task = () -> {
             System.out.println("map "+Thread.currentThread().getName());
-            //simulateFault(Integer.parseInt(process_num), Integer.parseInt(num_processes));
+            simulateFault(Integer.parseInt(process_num), Integer.parseInt(num_processes));
             MapReduce mr = new MapReduce();
             Mapper obj = null;
             try {

@@ -88,13 +88,13 @@ public class MapReduce {
                 System.out.println("Reducer Process "+i+" finished with "+reducer_processes.get(i).exitValue());
             }
             System.out.println("Completed Execution");
-//            for (int i=0; i<num_processes; i++) {
-//                File dir = new File("reducer_" + i);
-//                for (File file: dir.listFiles())
-//                    if (!file.isDirectory())
-//                        file.delete();
-//                dir.delete();
-//            }
+            for (int i=0; i<num_processes; i++) {
+                File dir = new File("reducer_" + i);
+                for (File file: dir.listFiles())
+                    if (!file.isDirectory())
+                        file.delete();
+                dir.delete();
+            }
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
         }
