@@ -49,7 +49,7 @@ public class MapReduce {
                 Process mapperProcess = pbMapper.inheritIO().start();
                 map_processes.add(mapperProcess);
             }
-            int success = 0;
+            int success = 1;
             for (int i=0; i<map_processes.size(); i++) {
                 map_processes.get(i).waitFor();
                 System.out.println("Map Process "+success+" finished with "+map_processes.get(i).exitValue());
@@ -88,13 +88,13 @@ public class MapReduce {
                 System.out.println("Reducer Process "+i+" finished with "+reducer_processes.get(i).exitValue());
             }
             System.out.println("Completed Execution");
-            for (int i=0; i<num_processes; i++) {
-                File dir = new File("reducer_" + i);
-                for (File file: dir.listFiles())
-                    if (!file.isDirectory())
-                        file.delete();
-                dir.delete();
-            }
+//            for (int i=0; i<num_processes; i++) {
+//                File dir = new File("reducer_" + i);
+//                for (File file: dir.listFiles())
+//                    if (!file.isDirectory())
+//                        file.delete();
+//                dir.delete();
+//            }
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
         }

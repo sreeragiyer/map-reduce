@@ -13,8 +13,6 @@ import java.util.List;
 
 public class MapperWorker {
     public void execute(Mapper obj, String inputFileLoc, int start_line, int end_line, int num_processes, int procees_num) {
-
-
         StringBuilder inputText = new StringBuilder();
         try {
             FileInputStream fs = new FileInputStream(inputFileLoc);
@@ -45,7 +43,7 @@ public class MapperWorker {
                     if (!tempFile.exists()) {
                         tempFile.createNewFile();
                     }
-                    FileWriter fw = new FileWriter(tempFile.getAbsoluteFile());
+                    FileWriter fw = new FileWriter(tempFile.getAbsoluteFile(), true);
                     BufferedWriter bw = new BufferedWriter(fw);
                     bufferedWriters.add(bw);
 
@@ -55,7 +53,7 @@ public class MapperWorker {
                     value.forEach(val -> {
                         try {
                             BufferedWriter bufferedWriter = bufferedWriters.get(hash_value);
-                            bufferedWriter.write(key + ":" + val+"~@"+start_line+"~$"+end_line);
+                            bufferedWriter.write(key + ":" + val);
                             bufferedWriter.write("\n");
                         } catch (IOException e) {
                             e.printStackTrace();
@@ -75,10 +73,13 @@ public class MapperWorker {
         }
     }
 
+    private static int faultId = -1;
     private static void simulateFault(int mapperId, int num_processes) {
         // picks a random integer between 0 and 2*num_processes,
         // if it is equal to the mapper id, then this mapper will be faulty (infinite loop)
-        int faultId = (int) (Math.random() * num_processes*2);
+        if(faultId == -1 && num_processes>0) {
+            faultId = (int) (Math.random() * num_processes);
+        }
         while(faultId == mapperId);
     }
 
@@ -93,7 +94,7 @@ public class MapperWorker {
 
         Runnable task = () -> {
             System.out.println("map "+Thread.currentThread().getName());
-            simulateFault(Integer.parseInt(process_num), Integer.parseInt(num_processes));
+            //simulateFault(Integer.parseInt(process_num), Integer.parseInt(num_processes));
             MapReduce mr = new MapReduce();
             Mapper obj = null;
             try {
