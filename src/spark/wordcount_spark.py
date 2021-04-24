@@ -14,7 +14,7 @@ counts_rdd = words.map(lambda word: (word, 1)).reduceByKey(lambda a, b: a + b)
 counts_tuple = counts_rdd.collect()
 
 # write to file
-f = open("hamletout.txt", "w")
+f = open("../spark_output/wordcount.txt", "w")
 for r in counts_tuple:
     f.write("{:<100}{:<30}\n".format(r[0], r[1]))
 f.close()
