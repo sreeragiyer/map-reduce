@@ -15,8 +15,9 @@ import java.util.stream.Stream;
 
 public interface Mapper extends Remote {
 
-    HashMap<String, List<String>> map(String k, String v) throws RemoteException;
 
+
+    HashMap<String, List<String>> map(String k, String v) throws RemoteException;
 //    public void execute(String inputFileLoc, int start_line, int end_line, int num_processes, int procees_num) {
 //
 //        StringBuilder inputText = new StringBuilder();

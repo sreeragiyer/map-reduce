@@ -15,8 +15,10 @@ public class WordinLineMapper extends UnicastRemoteObject implements Mapper, Ser
         super();
     }
 
-    public HashMap<String,List<String>> map(String docId,String input) throws RemoteException
+    public HashMap<String,List<String>> map(String start_line,String input) throws RemoteException
     {
+
+        int sl = Integer.parseInt(start_line);
         HashMap<String,List<String>> map = new HashMap<>();
         // The below regular expression splits the string by the different lines
         String[] lines = input.split("\\r?\\n");
@@ -24,10 +26,8 @@ public class WordinLineMapper extends UnicastRemoteObject implements Mapper, Ser
         for(String liner : lines)
         {
             // This removes all the empty lines before adding to the temp Arraylist
-            if(!liner.trim().isEmpty())
-            {
-                temp.add(liner);
-            }
+            temp.add(liner);
+
         }
 
         int count = temp.size();
@@ -48,7 +48,7 @@ public class WordinLineMapper extends UnicastRemoteObject implements Mapper, Ser
                 if(strin != null && strin.matches("^[a-zA-Z]*$"))
                 {
                 map.computeIfAbsent(strin,k -> new ArrayList<String>());
-                map.get(strin).add(Integer.toString(line));
+                map.get(strin).add(Integer.toString(sl+line));
                 }
             }
 

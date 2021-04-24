@@ -11,6 +11,7 @@ import java.util.List;
 public class MapperWorker {
     public void execute(Mapper obj, String inputFileLoc, int start_line, int end_line, int num_processes, int procees_num) {
 
+
         StringBuilder inputText = new StringBuilder();
         try {
             FileInputStream fs = new FileInputStream(inputFileLoc);
@@ -26,9 +27,9 @@ public class MapperWorker {
             //TODO : Handle the exception with proper messaging.
         }
 
-        String docId = "";
+
         try {
-            HashMap<String, List<String>> output = obj.map(docId, inputText.toString());
+            HashMap<String, List<String>> output = obj.map(String.valueOf(start_line), inputText.toString());
             List<BufferedWriter> bufferedWriters = new ArrayList<>();
             try {
                 String currentTime = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
@@ -44,13 +45,14 @@ public class MapperWorker {
                     FileWriter fw = new FileWriter(tempFile.getAbsoluteFile());
                     BufferedWriter bw = new BufferedWriter(fw);
                     bufferedWriters.add(bw);
+
                 }
                 output.forEach((key, value) -> {
                     int hash_value = Math.abs(key.hashCode()) % num_processes;
                     value.forEach(val -> {
                         try {
                             BufferedWriter bufferedWriter = bufferedWriters.get(hash_value);
-                            bufferedWriter.write(key + ":" + val);
+                            bufferedWriter.write(key + ":" + val+"~@"+start_line+"~$"+end_line);
                             bufferedWriter.write("\n");
                         } catch (IOException e) {
                             //TODO : Handle the exception with proper messaging.
