@@ -1,5 +1,3 @@
-
-#javac src/**/*.java
 if [[ "$OSTYPE" == "linux-gnu"* ]]; then
   find -name "*.java" > sources.txt
   javac @sources.txt

@@ -2,10 +2,12 @@ package mapreduce.utils;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.rmi.AlreadyBoundException;
 import java.rmi.Naming;
+import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
@@ -47,8 +49,30 @@ public class MapReduce {
                 Process mapperProcess = pbMapper.inheritIO().start();
                 map_processes.add(mapperProcess);
             }
-            for (int i=0; i<num_processes; i++) {
+            int success = 0;
+            for (int i=0; i<map_processes.size(); i++) {
                 map_processes.get(i).waitFor();
+                System.out.println("Map Process "+success+" finished with "+map_processes.get(i).exitValue());
+                if(map_processes.get(i).exitValue() == 0) {
+                    success = i;
+                }
+                else if(i<num_processes) {
+                    // if there was a fault in any of the num_processes original processes,
+                    // then shift that workload to the last successful worker
+                    int start_line = i*partition_length;
+                    int end_line = start_line+partition_length-1;
+                    if (end_line>=lineCount) {
+                        end_line = lineCount-1;
+                    }
+                    ProcessBuilder pbMapper = new ProcessBuilder("java",
+                            "-cp", "./src", "mapreduce/utils/MapperWorker", specs.mapperKey,
+                            inputFileLocation, String.valueOf(start_line), String.valueOf(end_line),
+                            String.valueOf(num_processes), String.valueOf(success));
+
+                    Process mapperProcess = pbMapper.inheritIO().start();
+                    map_processes.add(mapperProcess);
+
+                }
             }
 
             for (int i=0; i<num_processes; i++) {
@@ -61,6 +85,7 @@ public class MapReduce {
             }
             for (int i=0; i<num_processes; i++) {
                 reducer_processes.get(i).waitFor();
+                System.out.println("Reducer Process "+i+" finished with "+reducer_processes.get(i).exitValue());
             }
             System.out.println("Completed Execution");
             for (int i=0; i<num_processes; i++) {
@@ -119,13 +144,13 @@ public class MapReduce {
         }
     }
 
-    public Mapper getMapperObj(String objKey) throws Exception {
+    public Mapper getMapperObj(String objKey) throws RemoteException, NotBoundException, MalformedURLException {
         try {
             // fetch user defined mapper object from registry
             Mapper obj = (Mapper) Naming.lookup("rmi://localhost/"+objKey);
             return obj;
         }
-        catch (Exception ex) {
+        catch (RemoteException | NotBoundException | MalformedURLException ex) {
             ex.printStackTrace();
             throw ex;
         }

@@ -22,7 +22,6 @@ public class WordLength {
             mrs.reducer = new WordLengthReducer();
             MapReduce obj = new MapReduce();
             obj.mapReduce(mrs);
-            System.out.println("word length done");
             System.exit(0);
         }
         catch(RemoteException ex) {
