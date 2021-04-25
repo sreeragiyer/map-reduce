@@ -45,11 +45,13 @@ public class WordinLineMapper extends UnicastRemoteObject implements Mapper, Ser
             for(String strin : words)
             {
                 //This makes sure that only proper meaningful words are added to our map
-                if(strin != null && strin.matches("^[a-zA-Z]*$"))
+                if (strin != null)
                 {
-                map.computeIfAbsent(strin,k -> new ArrayList<String>());
-                map.get(strin).add(Integer.toString(sl+line));
+                    String updatedString = strin.replaceAll("[^a-zA-Z\\']", "").toLowerCase();
+                    map.computeIfAbsent(updatedString,k -> new ArrayList<String>());
+                    map.get(updatedString).add(Integer.toString(sl+line));
                 }
+
             }
 
             line++;
