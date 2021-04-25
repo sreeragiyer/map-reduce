@@ -53,12 +53,9 @@ public class MapReduce {
             for (int i=0; i<map_processes.size(); i++) {
                 map_processes.get(i).waitFor();
                 System.out.println("Map Process "+success+" finished with "+map_processes.get(i).exitValue());
-                if(map_processes.get(i).exitValue() == 0) {
-                    success = i;
-                }
-                else if(i<num_processes) {
-                    // if there was a fault in any of the num_processes original processes,
-                    // then shift that workload to the last successful worker
+                if(i<num_processes && map_processes.get(i).exitValue() != 0) {
+                    // if there was a fault in any of the n (num_processes) original workers,
+                    // then restart that worker
                     int start_line = i*partition_length;
                     int end_line = start_line+partition_length-1;
                     if (end_line>=lineCount) {
@@ -67,11 +64,9 @@ public class MapReduce {
                     ProcessBuilder pbMapper = new ProcessBuilder("java",
                             "-cp", "./src", "mapreduce/utils/MapperWorker", specs.mapperKey,
                             inputFileLocation, String.valueOf(start_line), String.valueOf(end_line),
-                            String.valueOf(num_processes), String.valueOf(success));
-
+                            String.valueOf(num_processes), String.valueOf(i));
                     Process mapperProcess = pbMapper.inheritIO().start();
                     map_processes.add(mapperProcess);
-
                 }
             }
 
@@ -79,13 +74,23 @@ public class MapReduce {
                 String outputFilePath = specs.outputFileLocation + "/partition_" + i + ".txt";
                 ProcessBuilder pbReducer = new ProcessBuilder("java",
                         "-cp", "./src", "mapreduce/utils/ReducerWorker",
-                        outputFilePath, "reducer_" + i, specs.reducerKey);
+                        outputFilePath, "reducer_" + i, specs.reducerKey, String.valueOf(num_processes));
                 Process reducerProcess = pbReducer.inheritIO().start();
                 reducer_processes.add(reducerProcess);
             }
-            for (int i=0; i<num_processes; i++) {
+            for (int i=0; i<reducer_processes.size(); i++) {
                 reducer_processes.get(i).waitFor();
                 System.out.println("Reducer Process "+i+" finished with "+reducer_processes.get(i).exitValue());
+                if(i<num_processes && reducer_processes.get(i).exitValue() != 0) {
+                    // if there was a fault in any of the n (num_processes) original workers,
+                    // then restart that worker
+                    String outputFilePath = specs.outputFileLocation + "/partition_" + i + ".txt";
+                    ProcessBuilder pbReducer = new ProcessBuilder("java",
+                            "-cp", "./src", "mapreduce/utils/ReducerWorker",
+                            outputFilePath, "reducer_" + i, specs.reducerKey, String.valueOf(num_processes));
+                    Process reducerProcess = pbReducer.inheritIO().start();
+                    reducer_processes.add(reducerProcess);
+                }
             }
             System.out.println("Completed Execution");
             for (int i=0; i<num_processes; i++) {
@@ -156,13 +161,13 @@ public class MapReduce {
         }
     }
 
-    public Reducer getReducerObj(String objKey) throws Exception {
+    public Reducer getReducerObj(String objKey) throws RemoteException, NotBoundException, MalformedURLException {
         try {
             // fetch user defined mapper object from registry
             Reducer obj = (Reducer) Naming.lookup("rmi://localhost/"+objKey);
             return obj;
         }
-        catch (Exception ex) {
+        catch (RemoteException | NotBoundException | MalformedURLException ex) {
             ex.printStackTrace();
             throw ex;
         }
