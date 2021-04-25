@@ -18,6 +18,7 @@ import java.util.stream.Stream;
 
 /**
  * The main mapReduce class which contains mapreduce function that executes the map reduce code.
+ * code for Master
  */
 public class MapReduce {
 
@@ -33,11 +34,14 @@ public class MapReduce {
         List<Process> reducer_processes = new ArrayList<>();
         int num_processes = specs.numProcesses;
         int partition_length = lineCount/(specs.numProcesses);
+
+        // pick one mapper and one reducer randomly as faulty
         int faultyMapper = getFaultyWorker(num_processes);
         int faultyReducer = getFaultyWorker(num_processes);
 
         try {
             for (int i=0; i<num_processes; i++) {
+                // start all mapper processes
                 int start_line = i*partition_length;
                 int end_line = start_line+partition_length-1;
                 if (end_line>=lineCount) {
@@ -53,6 +57,7 @@ public class MapReduce {
                 map_processes.add(mapperProcess);
             }
 
+            // wait for all mapper processes to complete
             for (int i=0; i<map_processes.size(); i++) {
                 map_processes.get(i).waitFor();
                 System.out.println(specs.mapperKey + "-"+(i>=num_processes? faultyMapper : i)+(map_processes.get(i).exitValue() ==0 ? " finished successfully." : " failed! Retrying..."));
@@ -73,7 +78,9 @@ public class MapReduce {
                 }
             }
 
+            // all mapper processes are now completed
             for (int i=0; i<num_processes; i++) {
+                // start all reducer processes
                 String outputFilePath = specs.outputFileLocation + "/partition_" + i + ".txt";
                 ProcessBuilder pbReducer = new ProcessBuilder("java",
                         "-cp", "./src", "mapreduce/utils/ReducerWorker",
@@ -81,6 +88,8 @@ public class MapReduce {
                 Process reducerProcess = pbReducer.inheritIO().start();
                 reducer_processes.add(reducerProcess);
             }
+
+            // wait for all reducer processes to complete
             for (int i=0; i<reducer_processes.size(); i++) {
                 reducer_processes.get(i).waitFor();
                 System.out.println(specs.reducerKey + "-"+(i>=num_processes? faultyReducer : i)+(reducer_processes.get(i).exitValue() ==0 ? " finished successfully." : " failed!"));
@@ -97,6 +106,7 @@ public class MapReduce {
             }
             System.out.println("Map Reduce completed for "+specs.mapperKey+"/"+specs.reducerKey+"\n");
             for (int i=0; i<num_processes; i++) {
+                // delete intermediate files (since there are N*N files formed)
                 File dir = new File("reducer_" + i);
                 for (File file: dir.listFiles())
                     if (!file.isDirectory())
@@ -108,10 +118,12 @@ public class MapReduce {
         }
     }
 
+    // return a random integer [0, N-1] to simulate fault tolerance
     private int getFaultyWorker(int num_processes) {
         return  (int) (Math.random() * num_processes);
     }
 
+    // counts number of lines in the filw
     private int getLineCount(String inputFileLocation) {
         int line_count = 0 ;
         try (Stream<String> lines = Files.lines(Paths.get(inputFileLocation))) {
@@ -122,6 +134,7 @@ public class MapReduce {
         return line_count;
     }
 
+    // adds mapper object to RMI registry
     public void addToRegistry(Mapper obj, String objKey) {
         try {
             mapperKey = objKey;
@@ -143,6 +156,7 @@ public class MapReduce {
         }
     }
 
+    // adds reducer obj to RMI registry
     public void addToRegistry(Reducer obj, String objKey) {
         try {
             reducerKey = objKey;
@@ -156,9 +170,9 @@ public class MapReduce {
         }
     }
 
+    // fetches user defined mapper object from RMI registry
     public Mapper getMapperObj(String objKey) throws RemoteException, NotBoundException, MalformedURLException {
         try {
-            // fetch user defined mapper object from registry
             Mapper obj = (Mapper) Naming.lookup("rmi://localhost/"+objKey);
             return obj;
         }
@@ -168,9 +182,9 @@ public class MapReduce {
         }
     }
 
+    // fetches user defined mapper object from RMI registry
     public Reducer getReducerObj(String objKey) throws RemoteException, NotBoundException, MalformedURLException {
         try {
-            // fetch user defined mapper object from registry
             Reducer obj = (Reducer) Naming.lookup("rmi://localhost/"+objKey);
             return obj;
         }
