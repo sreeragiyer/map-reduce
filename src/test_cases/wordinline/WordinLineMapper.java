@@ -9,12 +9,17 @@ import java.util.Locale;
 
 import mapreduce.utils.Mapper;
 
+/**
+ * User defined mapper class
+ */
 public class WordinLineMapper extends UnicastRemoteObject implements Mapper, Serializable {
+    // has to extend UnicastRemoteObject to get added to RMI registry
 
     public WordinLineMapper() throws RemoteException {
         super();
     }
 
+    // maps word-> line number
     public HashMap<String,List<String>> map(String start_line,String input) throws RemoteException
     {
 
