@@ -19,8 +19,9 @@ public class WordCountMapper extends UnicastRemoteObject implements Mapper, Seri
         for(String str : words)
         {
             if(str.length()>0) {
-                map.computeIfAbsent(str, k -> new ArrayList<String>());
-                map.get(str).add("1");
+                String updatedString = str.replaceAll("[^a-zA-Z0-9\\']", "");
+                map.computeIfAbsent(updatedString, k -> new ArrayList<String>());
+                map.get(updatedString).add("1");
             }
         }
 
