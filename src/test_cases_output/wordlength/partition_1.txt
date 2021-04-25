@@ -1,4 +1,0 @@
-1 : [a]
-4 : [odio,non,,Orci,arcu,erat,nunc,diam,nisi,enim,leo,,quam,urna,nisl,ante,amet,Nunc,quis,Duis,elit,orci,eget,eros]
-7 : [commodo,egestas,euismod,turpis,,natoque,feugiat,sodales,tellus,,tempor,,tortor,,posuere,blandit,lacinia,viverra,conubia,nostra,,dapibus,montes,,aliquam,cubilia,Quisque,semper,,Aliquam,aliquet,Vivamus,maximus]
-10 : [facilisis,,tincidunt,,vestibulum,parturient,hendrerit,,Vestibulum,adipiscing,fringilla,]

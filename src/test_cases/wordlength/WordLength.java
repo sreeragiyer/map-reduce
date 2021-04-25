@@ -12,8 +12,8 @@ public class WordLength {
         try {
             MapReduceSpecification mrs = new MapReduceSpecification();
             mrs.numProcesses = 3;
-            mrs.inputFileLocation = System.getProperty("user.dir") + "/src/data/loremipsum.txt";
-            mrs.outputFileLocation = System.getProperty("user.dir") + "/src/test_cases_output/wordlength";
+            mrs.inputFileLocation = System.getProperty("user.dir") + "/data/loremipsum.txt"; // test cases will be run from the root dir
+            mrs.outputFileLocation = System.getProperty("user.dir") + "/test_cases_output/wordlength";
             File directory = new File(mrs.outputFileLocation);
             directory.mkdir();
             mrs.mapperKey = "WordLengthMapper";

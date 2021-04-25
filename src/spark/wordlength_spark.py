@@ -14,7 +14,7 @@ lengths_rdd = words.map(lambda word: (len(word), word)).distinct().map(lambda wo
 lengths_tuple = lengths_rdd.collect()
 
 # write to file
-f = open("../spark_output/wordlength.txt", "w")
+f = open("../../spark_output/wordlength.txt", "w")
 for r in lengths_tuple:
     f.write("{:<50}{:<30}\n".format(r[0], str(r[1])))
 f.close()

@@ -1,0 +1,4 @@
+12 : [pellentesque,sollicitudin]
+3 : [est,nec,dis,leo,vel,per,Sed,mus,non,sed,et,,sit,ut,,dui,Nam,eu,]
+6 : [tempor,mollis,cursus,vitae,,ligula,varius,Nullam,litora,augue,,luctus,mattis,risus,,tellus,taciti,aptent,lectus,curae;,Aenean,felis,,tempus,primis,Mauris,lorem,,congue,dictum,magnis,purus,,ipsum,,ornare,turpis,rutrum,sapien,libero]
+9 : [efficitur,elementum,tristique,facilisis,imperdiet,consequat,vulputate,fermentum,pharetra,,Curabitur,venenatis,ridiculus,penatibus,hendrerit,ultricies,Phasellus,fringilla,sagittis,,tincidunt,malesuada,himenaeos,porttitor]

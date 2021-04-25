@@ -13,8 +13,8 @@ public class WordinLine {
         try {
             MapReduceSpecification mp = new MapReduceSpecification();
             mp.numProcesses = 2;
-            mp.inputFileLocation = System.getProperty("user.dir") + "/src/data/hamlet.txt";
-            mp.outputFileLocation = System.getProperty("user.dir") + "/src/test_cases_output/wordinline";
+            mp.inputFileLocation = System.getProperty("user.dir") + "/data/hamlet.txt"; // test cases will be run from the root dir
+            mp.outputFileLocation = System.getProperty("user.dir") + "/test_cases_output/wordinline";
             File directory = new File(mp.outputFileLocation);
             directory.mkdir();
             mp.mapperKey = "WordinLineMapper";

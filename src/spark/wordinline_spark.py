@@ -17,7 +17,7 @@ line_numbers_rdd = words.reduceByKey(lambda a, b: a + b)
 line_numbers_arr = line_numbers_rdd.collect()
 
 # write to file
-f = open("../spark_output/wordinline.txt", "w")
+f = open("../../spark_output/wordinline.txt", "w")
 for r in line_numbers_arr:
     f.write("{:<50}{:<30}\n".format(r[0], str(r[1])))
 f.close()
