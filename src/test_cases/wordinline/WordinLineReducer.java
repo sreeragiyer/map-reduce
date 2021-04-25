@@ -5,6 +5,7 @@ import java.io.Serializable;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 public class WordinLineReducer extends UnicastRemoteObject implements Reducer, Serializable {
@@ -15,7 +16,7 @@ public class WordinLineReducer extends UnicastRemoteObject implements Reducer, S
 
     public List<String> reduce(String word,List<String> lines) throws RemoteException {
          List<String> result = new ArrayList<String>();
-
+         lines = new ArrayList<>(new HashSet<>(lines)); // removing duplicate line numbers
          StringBuilder sb = new StringBuilder();
          for(String line : lines)
          {
