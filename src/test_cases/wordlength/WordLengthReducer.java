@@ -7,6 +7,7 @@ import java.io.Serializable;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 public class WordLengthReducer extends UnicastRemoteObject implements Reducer, Serializable {
@@ -14,7 +15,7 @@ public class WordLengthReducer extends UnicastRemoteObject implements Reducer, S
         super();
     }
     public List<String> reduce(String len, List<String> words) throws RemoteException {
-        String res = String.join(",", words);
+        String res = String.join(",", new ArrayList<String>(new HashSet<>(words)));
         List<String> joined = new ArrayList<>();
         joined.add(res);
         return joined;

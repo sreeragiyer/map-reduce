@@ -12,7 +12,7 @@ public class MapReduceSpecification {
      */
     public String inputFileLocation;
     /**
-     * Takes the output file location where the output is writtern after the
+     * Takes the output file location where the output is written after the
      * map reduce execution is completed.
      */
     public String outputFileLocation;

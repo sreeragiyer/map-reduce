@@ -12,7 +12,6 @@ import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.stream.Stream;
 
 public class ReducerWorker {
@@ -61,28 +60,13 @@ public class ReducerWorker {
         return map;
     }
 
-    private static int faultId = -1;
-    private static boolean faultFlag = false;
-    private static void simulateFault(String reducerId, int num_processes) {
-        // picks a random integer between 0 and 2*num_processes,
-        // if it is equal to the mapper id, then this mapper will be faulty (infinite loop)
-        if(faultId == -1 && num_processes>0) {
-            faultId = (int) (Math.random() * num_processes);
-        }
-        if(!faultFlag && "reducer_"+faultId == reducerId.toLowerCase(Locale.ROOT)) {
-            faultFlag = true;
-            while (true) ;
-        }
-    }
-
     public static void main(String[] args) {
         try {
             String opFileLoc = args[0];
             String reduceDirPath = args[1];
             String reducerKey = args[2];
-            String num_processes = args[3];
             Runnable task = () -> {
-                // simulateFault(reduceDirPath, Integer.parseInt(num_processes));
+                while(args.length>3 && reduceDirPath.equalsIgnoreCase("reducer_"+args[3]));
                 MapReduce mr = new MapReduce();
                 Reducer obj = null;
                 try {

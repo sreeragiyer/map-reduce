@@ -33,6 +33,8 @@ public class MapReduce {
         List<Process> reducer_processes = new ArrayList<>();
         int num_processes = specs.numProcesses;
         int partition_length = lineCount/(specs.numProcesses);
+        int faultyMapper = getFaultyWorker(num_processes);
+        int faultyReducer = getFaultyWorker(num_processes);
         try {
             for (int i=0; i<num_processes; i++) {
                 int start_line = i*partition_length;
@@ -40,19 +42,19 @@ public class MapReduce {
                 if (end_line>=lineCount) {
                     end_line = lineCount-1;
                 }
-                System.out.println(specs.mapperKey + "-" + start_line + "-" + end_line);
+                System.out.println(specs.mapperKey + "-"+i+" operating from line " + start_line + " to line " + end_line);
                 ProcessBuilder pbMapper = new ProcessBuilder("java",
                         "-cp", "./src", "mapreduce/utils/MapperWorker", specs.mapperKey,
                         inputFileLocation, String.valueOf(start_line), String.valueOf(end_line),
-                        String.valueOf(num_processes), String.valueOf(i));
+                        String.valueOf(num_processes), String.valueOf(i), String.valueOf(faultyMapper));
 
                 Process mapperProcess = pbMapper.inheritIO().start();
                 map_processes.add(mapperProcess);
             }
-            int success = 1;
+
             for (int i=0; i<map_processes.size(); i++) {
                 map_processes.get(i).waitFor();
-                System.out.println("Map Process "+success+" finished with "+map_processes.get(i).exitValue());
+                System.out.println(specs.mapperKey + "-"+i+(map_processes.get(i).exitValue() ==0 ? " finished successfully." : " failed!"));
                 if(i<num_processes && map_processes.get(i).exitValue() != 0) {
                     // if there was a fault in any of the n (num_processes) original workers,
                     // then restart that worker
@@ -74,25 +76,25 @@ public class MapReduce {
                 String outputFilePath = specs.outputFileLocation + "/partition_" + i + ".txt";
                 ProcessBuilder pbReducer = new ProcessBuilder("java",
                         "-cp", "./src", "mapreduce/utils/ReducerWorker",
-                        outputFilePath, "reducer_" + i, specs.reducerKey, String.valueOf(num_processes));
+                        outputFilePath, "reducer_" + i, specs.reducerKey, String.valueOf(faultyReducer));
                 Process reducerProcess = pbReducer.inheritIO().start();
                 reducer_processes.add(reducerProcess);
             }
             for (int i=0; i<reducer_processes.size(); i++) {
                 reducer_processes.get(i).waitFor();
-                System.out.println("Reducer Process "+i+" finished with "+reducer_processes.get(i).exitValue());
+                System.out.println(specs.reducerKey + "-"+i+(reducer_processes.get(i).exitValue() ==0 ? " finished successfully." : " failed!"));
                 if(i<num_processes && reducer_processes.get(i).exitValue() != 0) {
                     // if there was a fault in any of the n (num_processes) original workers,
                     // then restart that worker
                     String outputFilePath = specs.outputFileLocation + "/partition_" + i + ".txt";
                     ProcessBuilder pbReducer = new ProcessBuilder("java",
                             "-cp", "./src", "mapreduce/utils/ReducerWorker",
-                            outputFilePath, "reducer_" + i, specs.reducerKey, String.valueOf(num_processes));
+                            outputFilePath, "reducer_" + i, specs.reducerKey);
                     Process reducerProcess = pbReducer.inheritIO().start();
                     reducer_processes.add(reducerProcess);
                 }
             }
-            System.out.println("Completed Execution");
+            System.out.println("Map Reduce completed for "+specs.mapperKey+"/"+specs.reducerKey+"\n");
             for (int i=0; i<num_processes; i++) {
                 File dir = new File("reducer_" + i);
                 for (File file: dir.listFiles())
@@ -103,6 +105,10 @@ public class MapReduce {
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
         }
+    }
+
+    private int getFaultyWorker(int num_processes) {
+        return  (int) (Math.random() * num_processes);
     }
 
     private int getLineCount(String inputFileLocation) {
