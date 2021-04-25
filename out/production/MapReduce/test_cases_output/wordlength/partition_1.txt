@@ -1,4 +1,0 @@
-1 : [a,a,a,a,a,a,a]
-4 : [nisi,quam,amet,Orci,arcu,elit,elit,erat,elit,diam,nisi,arcu,ante,Nunc,nisl,erat,ante,non,,urna,amet,quis,nunc,Duis,quis,erat,leo,,diam,urna,eget,nisi,ante,eget,quam,enim,odio,nisi,quis,erat,eros,nisl,nisl,nisi,ante,orci,nisi,eros]
-7 : [dapibus,tellus,,feugiat,maximus,natoque,montes,,Quisque,egestas,conubia,nostra,,dapibus,Quisque,turpis,,Aliquam,blandit,egestas,aliquam,tempor,,tortor,,commodo,sodales,Vivamus,conubia,nostra,,dapibus,Quisque,sodales,posuere,egestas,posuere,euismod,sodales,tortor,,maximus,feugiat,semper,,lacinia,aliquet,aliquet,maximus,viverra,viverra,aliquet,aliquam,dapibus,posuere,cubilia,egestas,euismod]
-10 : [vestibulum,parturient,vestibulum,adipiscing,facilisis,,tincidunt,,fringilla,,hendrerit,,Vestibulum,Vestibulum]
