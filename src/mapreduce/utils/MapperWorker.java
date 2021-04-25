@@ -74,13 +74,17 @@ public class MapperWorker {
     }
 
     private static int faultId = -1;
+    private static boolean faultFlag = false;
     private static void simulateFault(int mapperId, int num_processes) {
         // picks a random integer between 0 and 2*num_processes,
         // if it is equal to the mapper id, then this mapper will be faulty (infinite loop)
         if(faultId == -1 && num_processes>0) {
             faultId = (int) (Math.random() * num_processes);
         }
-        while(faultId == mapperId);
+        if(!faultFlag && faultId == mapperId) {
+            faultFlag = true;
+            while (true);
+        }
     }
 
     public static void main(String[] args) throws InterruptedException {
@@ -94,7 +98,7 @@ public class MapperWorker {
 
         Runnable task = () -> {
             System.out.println("map "+Thread.currentThread().getName());
-            simulateFault(Integer.parseInt(process_num), Integer.parseInt(num_processes));
+            // simulateFault(Integer.parseInt(process_num), Integer.parseInt(num_processes));
             MapReduce mr = new MapReduce();
             Mapper obj = null;
             try {
