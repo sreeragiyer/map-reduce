@@ -32,4 +32,8 @@ public class MapReduceSpecification {
      * key to user defined reducer object for the rmi registry
      */
     public String reducerKey;
+    /**
+     * time limit for worker in milliseconds
+     */
+    public int timeout = 6000;
 }

@@ -35,6 +35,7 @@ public class MapReduce {
         int partition_length = lineCount/(specs.numProcesses);
         int faultyMapper = getFaultyWorker(num_processes);
         int faultyReducer = getFaultyWorker(num_processes);
+
         try {
             for (int i=0; i<num_processes; i++) {
                 int start_line = i*partition_length;
@@ -46,7 +47,7 @@ public class MapReduce {
                 ProcessBuilder pbMapper = new ProcessBuilder("java",
                         "-cp", "./src", "mapreduce/utils/MapperWorker", specs.mapperKey,
                         inputFileLocation, String.valueOf(start_line), String.valueOf(end_line),
-                        String.valueOf(num_processes), String.valueOf(i), String.valueOf(faultyMapper));
+                        String.valueOf(num_processes), String.valueOf(i), String.valueOf(specs.timeout), String.valueOf(faultyMapper));
 
                 Process mapperProcess = pbMapper.inheritIO().start();
                 map_processes.add(mapperProcess);
@@ -54,7 +55,7 @@ public class MapReduce {
 
             for (int i=0; i<map_processes.size(); i++) {
                 map_processes.get(i).waitFor();
-                System.out.println(specs.mapperKey + "-"+i+(map_processes.get(i).exitValue() ==0 ? " finished successfully." : " failed!"));
+                System.out.println(specs.mapperKey + "-"+(i>=num_processes? faultyMapper : i)+(map_processes.get(i).exitValue() ==0 ? " finished successfully." : " failed! Retrying..."));
                 if(i<num_processes && map_processes.get(i).exitValue() != 0) {
                     // if there was a fault in any of the n (num_processes) original workers,
                     // then restart that worker
@@ -66,7 +67,7 @@ public class MapReduce {
                     ProcessBuilder pbMapper = new ProcessBuilder("java",
                             "-cp", "./src", "mapreduce/utils/MapperWorker", specs.mapperKey,
                             inputFileLocation, String.valueOf(start_line), String.valueOf(end_line),
-                            String.valueOf(num_processes), String.valueOf(i));
+                            String.valueOf(num_processes), String.valueOf(i), String.valueOf(specs.timeout));
                     Process mapperProcess = pbMapper.inheritIO().start();
                     map_processes.add(mapperProcess);
                 }
@@ -76,20 +77,20 @@ public class MapReduce {
                 String outputFilePath = specs.outputFileLocation + "/partition_" + i + ".txt";
                 ProcessBuilder pbReducer = new ProcessBuilder("java",
                         "-cp", "./src", "mapreduce/utils/ReducerWorker",
-                        outputFilePath, "reducer_" + i, specs.reducerKey, String.valueOf(faultyReducer));
+                        outputFilePath, "reducer_" + i, specs.reducerKey, String.valueOf(specs.timeout), String.valueOf(faultyReducer));
                 Process reducerProcess = pbReducer.inheritIO().start();
                 reducer_processes.add(reducerProcess);
             }
             for (int i=0; i<reducer_processes.size(); i++) {
                 reducer_processes.get(i).waitFor();
-                System.out.println(specs.reducerKey + "-"+i+(reducer_processes.get(i).exitValue() ==0 ? " finished successfully." : " failed!"));
+                System.out.println(specs.reducerKey + "-"+(i>=num_processes? faultyReducer : i)+(reducer_processes.get(i).exitValue() ==0 ? " finished successfully." : " failed!"));
                 if(i<num_processes && reducer_processes.get(i).exitValue() != 0) {
                     // if there was a fault in any of the n (num_processes) original workers,
                     // then restart that worker
                     String outputFilePath = specs.outputFileLocation + "/partition_" + i + ".txt";
                     ProcessBuilder pbReducer = new ProcessBuilder("java",
                             "-cp", "./src", "mapreduce/utils/ReducerWorker",
-                            outputFilePath, "reducer_" + i, specs.reducerKey);
+                            outputFilePath, "reducer_" + i, specs.reducerKey, String.valueOf(specs.timeout));
                     Process reducerProcess = pbReducer.inheritIO().start();
                     reducer_processes.add(reducerProcess);
                 }

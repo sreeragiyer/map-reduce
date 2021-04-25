@@ -8,6 +8,7 @@
 ./src/test_cases/wordlength/WordLengthMapper.java
 ./src/test_cases/wordlength/WordLengthReducer.java
 ./src/test_cases/wordcount/WordCountReducer.java
+./src/test_cases/wordcount/TestCase.java
 ./src/test_cases/wordcount/WordCount.java
 ./src/test_cases/wordcount/WordCountMapper.java
 ./src/test_cases/wordinline/WordinLineReducer.java

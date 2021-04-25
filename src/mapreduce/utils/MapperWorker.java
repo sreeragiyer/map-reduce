@@ -81,9 +81,11 @@ public class MapperWorker {
         String end_line = args[3];
         String num_processes = args[4];
         String process_num = args[5];
+        int timeout = Integer.parseInt(args[6]);
+        timeout = timeout > 0 ? timeout : 6000;
 
         Runnable task = () -> {
-            while(args.length > 6 && Integer.parseInt(process_num) == Integer.parseInt(args[6]));
+            while(args.length > 7 && Integer.parseInt(process_num) == Integer.parseInt(args[7]));
             MapReduce mr = new MapReduce();
             Mapper obj = null;
             try {
@@ -100,7 +102,7 @@ public class MapperWorker {
         };
         Thread mapThread = new Thread(task);
         mapThread.start();
-        mapThread.join(6000);
+        mapThread.join(timeout);
         if(mapThread.isAlive()) {
             System.exit(1);
         }

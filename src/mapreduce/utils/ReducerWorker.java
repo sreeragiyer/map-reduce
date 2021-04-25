@@ -65,8 +65,11 @@ public class ReducerWorker {
             String opFileLoc = args[0];
             String reduceDirPath = args[1];
             String reducerKey = args[2];
+            int timeout = Integer.parseInt(args[3]);
+            timeout = timeout > 0 ? timeout : 6000;
+
             Runnable task = () -> {
-                while(args.length>3 && reduceDirPath.equalsIgnoreCase("reducer_"+args[3]));
+                while(args.length>4 && reduceDirPath.equalsIgnoreCase("reducer_"+args[4]));
                 MapReduce mr = new MapReduce();
                 Reducer obj = null;
                 try {
@@ -82,7 +85,7 @@ public class ReducerWorker {
             };
             Thread reduceThread = new Thread(task);
             reduceThread.start();
-            reduceThread.join(6000);
+            reduceThread.join(timeout);
             if(reduceThread.isAlive()) {
                 System.exit(1);
             }

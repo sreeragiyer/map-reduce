@@ -20,6 +20,7 @@ public class WordLength {
             mrs.reducerKey = "WordLengthReducer";
             mrs.mapper = new WordLengthMapper();
             mrs.reducer = new WordLengthReducer();
+            mrs.timeout = 2000;
             MapReduce obj = new MapReduce();
             obj.mapReduce(mrs);
             System.exit(0);
