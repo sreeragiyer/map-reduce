@@ -95,29 +95,19 @@ public class MapperWorker {
         timeout = timeout > 0 ? timeout : 6000;
 
         // starting as a new thread to ensure time limit
-        Runnable task = () -> {
-            while(args.length > 7 && Integer.parseInt(process_num) == Integer.parseInt(args[7])); // to simulate fault tolerance
-            MapReduce mr = new MapReduce();
-            Mapper obj = null;
-            try {
-                obj = mr.getMapperObj(mapperKey); // get user defined mapper object from RMI registry
-            }
-            catch (RemoteException | NotBoundException | MalformedURLException e) {
-                e.printStackTrace();
-                System.exit(2);
-            }
-            MapperWorker w = new MapperWorker();
-            w.execute(obj, inputFileLoc, Integer.parseInt(start_line), Integer.parseInt(end_line),
-                    Integer.parseInt(num_processes), Integer.parseInt(process_num));
 
-        };
-        Thread mapThread = new Thread(task);
-        mapThread.start();
-        mapThread.join(timeout);
-        // if time limit exceeded, then stop this process
-        if(mapThread.isAlive()) {
-            System.exit(1);
+        while(args.length > 7 && Integer.parseInt(process_num) == Integer.parseInt(args[7])); // to simulate fault tolerance
+        MapReduce mr = new MapReduce();
+        Mapper obj = null;
+        try {
+            obj = mr.getMapperObj(mapperKey); // get user defined mapper object from RMI registry
         }
+        catch (RemoteException | NotBoundException | MalformedURLException e) {
+            e.printStackTrace();
+        }
+        MapperWorker w = new MapperWorker();
+        w.execute(obj, inputFileLoc, Integer.parseInt(start_line), Integer.parseInt(end_line),
+                Integer.parseInt(num_processes), Integer.parseInt(process_num));
 
     }
 }

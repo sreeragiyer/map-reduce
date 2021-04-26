@@ -81,29 +81,18 @@ public class ReducerWorker {
             timeout = timeout > 0 ? timeout : 6000;
 
             // start as new thread to ensure time limit does not exceed
-            Runnable task = () -> {
-                while(args.length>4 && reduceDirPath.equalsIgnoreCase("reducer_"+args[4])); // to simulate fault tolerance
-                MapReduce mr = new MapReduce();
-                Reducer obj = null;
-                try {
-                    obj = mr.getReducerObj(reducerKey);
-                }
-                catch (RemoteException | NotBoundException | MalformedURLException e) {
-                    e.printStackTrace();
-                    System.exit(2);
-                }
-                ReducerWorker r = new ReducerWorker();
-                HashMap<String, List<String>> tempData = r.getMapFromTextFile(reduceDirPath);
-                r.execute(obj, opFileLoc, tempData);
-            };
-            Thread reduceThread = new Thread(task);
-            reduceThread.start();
-            reduceThread.join(timeout);
-            // if time limit exceeded, then stop this process
-            if(reduceThread.isAlive()) {
-                System.exit(1);
+            while(args.length>4 && reduceDirPath.equalsIgnoreCase("reducer_"+args[4])); // to simulate fault tolerance
+            MapReduce mr = new MapReduce();
+            Reducer obj = null;
+            try {
+                obj = mr.getReducerObj(reducerKey);
             }
-
+            catch (RemoteException | NotBoundException | MalformedURLException e) {
+                e.printStackTrace();
+            }
+            ReducerWorker r = new ReducerWorker();
+            HashMap<String, List<String>> tempData = r.getMapFromTextFile(reduceDirPath);
+            r.execute(obj, opFileLoc, tempData);
         }
         catch(Exception e) {
             System.out.println("class not found");
