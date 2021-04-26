@@ -94,8 +94,6 @@ public class MapperWorker {
         int timeout = Integer.parseInt(args[6]);
         timeout = timeout > 0 ? timeout : 6000;
 
-        // starting as a new thread to ensure time limit
-
         while(args.length > 7 && Integer.parseInt(process_num) == Integer.parseInt(args[7])); // to simulate fault tolerance
         MapReduce mr = new MapReduce();
         Mapper obj = null;

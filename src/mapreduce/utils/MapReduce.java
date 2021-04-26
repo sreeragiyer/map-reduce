@@ -61,7 +61,7 @@ public class MapReduce {
             // wait for all mapper processes to complete
             for (int i=0; i<map_processes.size(); i++) {
                 boolean isTimedOut = false;
-                if(!map_processes.get(i).waitFor(6000, TimeUnit.MILLISECONDS)) {
+                if(!map_processes.get(i).waitFor(specs.timeout, TimeUnit.MILLISECONDS)) {
                     map_processes.get(i).destroy();
                     isTimedOut = true;
                 }
@@ -97,7 +97,7 @@ public class MapReduce {
             // wait for all reducer processes to complete
             for (int i=0; i<reducer_processes.size(); i++) {
                 boolean isTimedOut = false;
-                if(!reducer_processes.get(i).waitFor(6000, TimeUnit.MILLISECONDS)) {
+                if(!reducer_processes.get(i).waitFor(specs.timeout, TimeUnit.MILLISECONDS)) {
                     reducer_processes.get(i).destroy();
                     isTimedOut = true;
                 }

@@ -79,13 +79,11 @@ public class ReducerWorker {
         int timeout = Integer.parseInt(args[3]);
         timeout = timeout > 0 ? timeout : 6000;
 
-        // start as new thread to ensure time limit does not exceed
-        while (args.length > 4 && reduceDirPath.equalsIgnoreCase("reducer_" + args[4]))
-            ; // to simulate fault tolerance
+        while (args.length > 4 && reduceDirPath.equalsIgnoreCase("reducer_" + args[4])); // to simulate fault tolerance
         MapReduce mr = new MapReduce();
         Reducer obj = null;
         try {
-            obj = mr.getReducerObj(reducerKey);
+            obj = mr.getReducerObj(reducerKey); // get from RMI registry
         } catch (RemoteException | NotBoundException | MalformedURLException e) {
             e.printStackTrace();
             throw e;
