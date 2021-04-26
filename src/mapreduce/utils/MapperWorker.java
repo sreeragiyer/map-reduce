@@ -83,7 +83,7 @@ public class MapperWorker {
     }
 
     // will be invoked by the master as a separate process
-    public static void main(String[] args) throws InterruptedException {
+    public static void main(String[] args) throws Exception {
         // read all input parameters provided by the master
         String mapperKey = args[0];
         String inputFileLoc = args[1];
@@ -104,6 +104,7 @@ public class MapperWorker {
         }
         catch (RemoteException | NotBoundException | MalformedURLException e) {
             e.printStackTrace();
+            throw e;
         }
         MapperWorker w = new MapperWorker();
         w.execute(obj, inputFileLoc, Integer.parseInt(start_line), Integer.parseInt(end_line),

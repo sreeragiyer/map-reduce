@@ -71,31 +71,28 @@ public class ReducerWorker {
     }
 
     // will be invoked by the master as a separate process
-    public static void main(String[] args) {
-        try {
-            // read all input parameters provided by master
-            String opFileLoc = args[0];
-            String reduceDirPath = args[1];
-            String reducerKey = args[2];
-            int timeout = Integer.parseInt(args[3]);
-            timeout = timeout > 0 ? timeout : 6000;
+    public static void main(String[] args) throws Exception{
+        // read all input parameters provided by master
+        String opFileLoc = args[0];
+        String reduceDirPath = args[1];
+        String reducerKey = args[2];
+        int timeout = Integer.parseInt(args[3]);
+        timeout = timeout > 0 ? timeout : 6000;
 
-            // start as new thread to ensure time limit does not exceed
-            while(args.length>4 && reduceDirPath.equalsIgnoreCase("reducer_"+args[4])); // to simulate fault tolerance
-            MapReduce mr = new MapReduce();
-            Reducer obj = null;
-            try {
-                obj = mr.getReducerObj(reducerKey);
-            }
-            catch (RemoteException | NotBoundException | MalformedURLException e) {
-                e.printStackTrace();
-            }
-            ReducerWorker r = new ReducerWorker();
-            HashMap<String, List<String>> tempData = r.getMapFromTextFile(reduceDirPath);
-            r.execute(obj, opFileLoc, tempData);
+        // start as new thread to ensure time limit does not exceed
+        while (args.length > 4 && reduceDirPath.equalsIgnoreCase("reducer_" + args[4]))
+            ; // to simulate fault tolerance
+        MapReduce mr = new MapReduce();
+        Reducer obj = null;
+        try {
+            obj = mr.getReducerObj(reducerKey);
+        } catch (RemoteException | NotBoundException | MalformedURLException e) {
+            e.printStackTrace();
+            throw e;
         }
-        catch(Exception e) {
-            System.out.println("class not found");
-        }
+        ReducerWorker r = new ReducerWorker();
+        HashMap<String, List<String>> tempData = r.getMapFromTextFile(reduceDirPath);
+        r.execute(obj, opFileLoc, tempData);
+        
     }
 }

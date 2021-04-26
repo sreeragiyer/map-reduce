@@ -60,13 +60,13 @@ public class MapReduce {
 
             // wait for all mapper processes to complete
             for (int i=0; i<map_processes.size(); i++) {
-                boolean processFlag = true;
+                boolean isTimedOut = false;
                 if(!map_processes.get(i).waitFor(6000, TimeUnit.MILLISECONDS)) {
                     map_processes.get(i).destroy();
-                    processFlag = false;
+                    isTimedOut = true;
                 }
-                System.out.println(specs.mapperKey + "-"+(i>=num_processes? faultyMapper : i)+(processFlag && map_processes.get(i).exitValue() ==0 ? " finished successfully." : " failed! Retrying..."));
-                if(i<num_processes && processFlag && map_processes.get(i).exitValue() != 0) {
+                System.out.println(specs.mapperKey + "-"+(i>=num_processes? faultyMapper : i)+(isTimedOut || map_processes.get(i).exitValue() != 0 ? " failed! Retrying..." : " finished successfully."));
+                if(i<num_processes && (isTimedOut || map_processes.get(i).exitValue() != 0)) {
                     // if there was a fault in any of the n (num_processes) original workers,
                     // then restart that worker
                     int start_line = i*partition_length;
@@ -96,13 +96,13 @@ public class MapReduce {
 
             // wait for all reducer processes to complete
             for (int i=0; i<reducer_processes.size(); i++) {
-                boolean processFlag = true;
+                boolean isTimedOut = false;
                 if(!reducer_processes.get(i).waitFor(6000, TimeUnit.MILLISECONDS)) {
                     reducer_processes.get(i).destroy();
-                    processFlag = false;
+                    isTimedOut = true;
                 }
-                System.out.println(specs.reducerKey + "-"+(i>=num_processes? faultyReducer : i)+(processFlag && reducer_processes.get(i).exitValue() ==0 ? " finished successfully." : " failed!"));
-                if(i<num_processes && processFlag && reducer_processes.get(i).exitValue() != 0) {
+                System.out.println(specs.reducerKey + "-"+(i>=num_processes? faultyReducer : i)+(isTimedOut || reducer_processes.get(i).exitValue() != 0 ? " failed! Retrying..." : " finished successfully."));
+                if(i<num_processes && (isTimedOut || reducer_processes.get(i).exitValue() != 0)) {
                     // if there was a fault in any of the n (num_processes) original workers,
                     // then restart that worker
                     String outputFilePath = specs.outputFileLocation + "/partition_" + i + ".txt";
