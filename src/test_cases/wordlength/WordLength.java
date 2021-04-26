@@ -24,7 +24,7 @@ public class WordLength {
             mrs.reducerKey = "WordLengthReducer";
             mrs.mapper = new WordLengthMapper();
             mrs.reducer = new WordLengthReducer();
-            mrs.timeout = 2000; // setting a lesser timeout since this operates on smaller data
+            mrs.timeout = 20000; // setting a lesser timeout since this operates on smaller data
             MapReduce obj = new MapReduce();
             // start the map reduce operation
             obj.mapReduce(mrs);

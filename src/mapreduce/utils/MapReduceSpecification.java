@@ -35,5 +35,5 @@ public class MapReduceSpecification {
     /**
      * time limit for worker in milliseconds
      */
-    public int timeout = 6000;
+    public int timeout = 30000;
 }
